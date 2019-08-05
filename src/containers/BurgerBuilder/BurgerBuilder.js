@@ -30,13 +30,15 @@ class BurgerBuilder extends Component {
     this.setState({ purchasing: true });
   };
 
-  updatePurchaseState = (ingredients) => {
+  updatePurchaseState = ingredients => {
     const sum = Object.keys(ingredients)
-      .map((igKey) => {
-        return ingredients[igKey]
+      .map(igKey => {
+        return ingredients[igKey];
       })
-      .reduce((acc, curr) => { return acc + curr }, 0);
-    
+      .reduce((acc, curr) => {
+        return acc + curr;
+      }, 0);
+
     this.setState({ purchaseable: sum > 0 });
   };
 
@@ -67,16 +69,15 @@ class BurgerBuilder extends Component {
 
     this.setState({ totalPrice: newPrice, ingredients: updatedIngredients });
     this.updatePurchaseState(updatedIngredients);
-
   };
 
   purchaseCancelHandler = () => {
     this.setState({ purchasing: false });
-  }
+  };
 
   purchaseContinueHandler = () => {
     alert('YOU CONTiNUE');
-  }
+  };
 
   render() {
     const disabledInfo = {
@@ -85,19 +86,23 @@ class BurgerBuilder extends Component {
 
     for (let key in disabledInfo) {
       disabledInfo[key] = disabledInfo[key] <= 0;
-    };
+    }
 
     return (
       <Lux>
-        <Modal modalClosed={this.purchaseCancelHandler} show={this.state.purchasing}>
+        <Modal
+          modalClosed={this.purchaseCancelHandler}
+          show={this.state.purchasing}
+        >
           <OrderSummary
             price={this.state.totalPrice}
             purchaseCancelled={this.purchaseCancelHandler}
             purchaseContinued={this.purchaseContinueHandler}
-            ingredients={this.state.ingredients}/>
+            ingredients={this.state.ingredients}
+          />
         </Modal>
-        <Burger ingredients={this.state.ingredients}/> 
-        <BuildControls 
+        <Burger ingredients={this.state.ingredients} />
+        <BuildControls
           ingredientAdded={this.addIngredientHandler}
           purchaseable={this.state.purchaseable}
           ordered={this.purchaseHandler}
@@ -107,8 +112,7 @@ class BurgerBuilder extends Component {
         />
       </Lux>
     );
-  };
-};
+  }
+}
 
 export default BurgerBuilder;
-
