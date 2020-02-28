@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import Button from '../../../components/UI/Button/Button'
 import Spinner from '../../../components/UI/Spinner/Spinner'
 import Input from '../../../components/UI/Input/Input'
-import axios from '../../../axios-orders'
+import { purchaseBurguerStart } from '../../../store/actions'
 
 import classes from './ContactData.module.scss'
 
@@ -115,15 +115,17 @@ class ContactData extends Component {
       orderData: formData
     };
 
-    axios
-      .post('/orders.json', order)
-      .then(response => {
-        this.setState({ loading: false });
-        this.props.history.push('/')
-      })
-      .catch(error => {
-        this.setState({ loading: false });
-      });
+    this.props.onSubmitOrder(order)
+
+    // axios
+    //   .post('/orders.json', order)
+    //   .then(response => {
+    //     this.setState({ loading: false });
+    //     this.props.history.push('/')
+    //   })
+    //   .catch(error => {
+    //     this.setState({ loading: false });
+    //   });
   }
   
   inputChangeHandler = (e, inputIndentifier) => {
@@ -218,4 +220,10 @@ const mapStateToProps = state => {
     tPrice: state.totalPrice
   }
 }
-export default connect(mapStateToProps)(ContactData)
+
+const mapDispatchToProps = dispatch => {
+  return {
+    onSubmitOrder: (order) => dispatch(purchaseBurguerStart(order))
+  }
+}
+export default connect(mapStateToProps, mapDispatchToProps)(ContactData)
