@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import Button from '../../../components/UI/Button/Button'
 import Spinner from '../../../components/UI/Spinner/Spinner'
 import Input from '../../../components/UI/Input/Input'
-import { purchaseBurguerStart } from '../../../store/actions'
+import { purchaseBurger } from '../../../store/actions'
 
 import classes from './ContactData.module.scss'
 
@@ -96,8 +96,7 @@ class ContactData extends Component {
         validation: {}
       },
     },
-    formIsValid: false,
-    loading: false
+    formIsValid: false
   }
 
   orderHandler = (e) => {
@@ -201,7 +200,7 @@ class ContactData extends Component {
         >ORDER</Button>
       </form>
     )
-    if (this.state.loading) {
+    if (this.props.loading) {
       form = <Spinner />
     }
 
@@ -216,14 +215,15 @@ class ContactData extends Component {
 
 const mapStateToProps = state => {
   return {
-    ings: state.ingredients,
-    tPrice: state.totalPrice
+    ings: state.burgerBuilder.ingredients,
+    loading: state.order.loading,
+    tPrice: state.burgerBuilder.totalPrice
   }
 }
 
 const mapDispatchToProps = dispatch => {
   return {
-    onSubmitOrder: (order) => dispatch(purchaseBurguerStart(order))
+    onSubmitOrder: (order) => dispatch(purchaseBurger(order))
   }
 }
 export default connect(mapStateToProps, mapDispatchToProps)(ContactData)
