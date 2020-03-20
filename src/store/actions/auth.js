@@ -1,4 +1,4 @@
-import { AUTH_SUCCESS, AUTH_START, AUTH_FAIL } from './actionTypes'
+import { AUTH_SUCCESS, AUTH_START, AUTH_FAIL, AUTH_LOG_OUT, SET_AUTH_REDIRECT_PATH } from './actionTypes'
 import axios from 'axios'
 
 export const authStart = () => {
@@ -7,10 +7,11 @@ export const authStart = () => {
   }
 }
 
-export const authSuccess = (authData) => {
+export const authSuccess = (idToken, userId) => {
   return {
     type: AUTH_SUCCESS,
-    authData
+    token: idToken,
+    userId
   }
 }
 
@@ -18,6 +19,20 @@ export const authFail = (error) => {
   return {
     type: AUTH_FAIL,
     error
+  }
+}
+
+export const logOut = () => {
+  return {
+    type: AUTH_LOG_OUT
+  }
+}
+
+const checkAuthTimeout = expirationTime => {
+  return dispatch => {
+    setTimeout(() => {
+      dispatch(logOut())
+    }, expirationTime * 1000)
   }
 }
 
@@ -35,12 +50,20 @@ export const auth = (email, password, isSignUp) => {
     }
     axios.post(url, authData)
       .then(res => {
-        console.log(res)
-        dispatch(authSuccess(res.data))
+        // console.log(res.data.idToken)
+        dispatch(authSuccess(res.data.idToken, res.data.localId))
+        dispatch(checkAuthTimeout(res.data.expiresIn))
       })
       .catch(err => {
         console.log(err)
-        dispatch(authFail(err))
+        dispatch(authFail(err.response.data.error))
       })
+  }
+}
+
+export const setAuthRedirectPath = path => {
+  return {
+    type: SET_AUTH_REDIRECT_PATH,
+    path
   }
 }

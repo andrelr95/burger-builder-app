@@ -114,17 +114,7 @@ class ContactData extends Component {
       orderData: formData
     };
 
-    this.props.onSubmitOrder(order)
-
-    // axios
-    //   .post('/orders.json', order)
-    //   .then(response => {
-    //     this.setState({ loading: false });
-    //     this.props.history.push('/')
-    //   })
-    //   .catch(error => {
-    //     this.setState({ loading: false });
-    //   });
+    this.props.onSubmitOrder(order, this.props.token)
   }
   
   inputChangeHandler = (e, inputIndentifier) => {
@@ -217,13 +207,14 @@ const mapStateToProps = state => {
   return {
     ings: state.burgerBuilder.ingredients,
     loading: state.order.loading,
-    tPrice: state.burgerBuilder.totalPrice
+    tPrice: state.burgerBuilder.totalPrice,
+    token: state.auth.token
   }
 }
 
 const mapDispatchToProps = dispatch => {
   return {
-    onSubmitOrder: (order) => dispatch(purchaseBurger(order))
+    onSubmitOrder: (order, token) => dispatch(purchaseBurger(order, token))
   }
 }
 export default connect(mapStateToProps, mapDispatchToProps)(ContactData)
