@@ -1,10 +1,10 @@
-import React from 'react';
+import React from "react";
 
-import Logo from '../../Logo/Logo';
-import NavigationItems from '../NavigationItems/NavigationItems';
-import classes from './SideDrawer.module.scss';
-import Backdrop from '../../UI/Backdrop/Backdrop';
-import Lux from '../../../hoc/Lux';
+import Logo from "../../Logo/Logo";
+import NavigationItems from "../NavigationItems/NavigationItems";
+import classes from "./SideDrawer.module.scss";
+import Backdrop from "../../UI/Backdrop/Backdrop";
+import Lux from "../../../hoc/Lux";
 
 const sideDrawer = props => {
   let attachedClasses = [classes.SideDrawer, classes.Close];
@@ -14,7 +14,7 @@ const sideDrawer = props => {
   return (
     <Lux>
       <Backdrop show={props.open} clicked={props.closed} />
-      <div className={attachedClasses.join(' ')}>
+      <div className={attachedClasses.join(" ")} onClick={props.closed}>
         <div className={classes.Logo}>
           <Logo />
         </div>
